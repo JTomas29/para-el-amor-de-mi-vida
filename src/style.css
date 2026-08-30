@@ -628,6 +628,12 @@ body {
   transition: opacity 300ms ease;
 }
 
+.carrusel-img-wrap {
+  --foto-ratio: 4 / 3;
+  aspect-ratio: var(--foto-ratio);
+  transition: aspect-ratio 300ms ease;
+}
+
 /* ---------------------------------------------------------------------------
    Overlay de transición
 --------------------------------------------------------------------------- */

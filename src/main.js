@@ -7,6 +7,14 @@ import citaDeanDennys2 from './assets/img/citaDean&Dennys2.jpg'
 import citaPool from './assets/img/citaPool.jpg'
 import citaLoDePepe from './assets/img/citaLoDePepe.jpg'
 import foto1ro from './assets/img/1ro.jpg'
+import franouiYpeli from './assets/img/franouiYpeli.jpeg'
+import juegoTheWalkingDead from './assets/img/juegoTheWalkingDead.jpeg'
+import practicaPictionary from './assets/img/practicaPictionary.jpeg'
+import royjoafot1 from './assets/img/royjoafot1.jpeg'
+import royjoafot2 from './assets/img/royjoafot2.jpeg'
+import royjoafot3 from './assets/img/royjoafot3.jpeg'
+import royjoafot4 from './assets/img/royjoafot4.jpeg'
+import tejo from './assets/img/tejo.jpeg'
 
 const app = document.querySelector('#app')
 
@@ -31,12 +39,43 @@ const CONFIG = {
       { titulo: 'Cocinar juntos', fotos: [] },
       { titulo: 'Ir al pool', fotos: [citaPool] },
       { titulo: 'Ir a comer panchos en lo de Pepe', fotos: [citaLoDePepe] },
+      { titulo: 'Ir a ver cars reestreno 8 octubre', fotos: [] },
+      { titulo: 'Salir juntos a bailar', fotos: [] },
+      { titulo: 'Jugar al tejo', fotos: [tejo] },
+      { titulo: 'Jugar a las cartas', fotos: [] },
+      { titulo: 'Berenice x2 probar chipa y croassan del chocolate verde', fotos: [] },
+      { titulo: 'Piedra papel o tijera date', fotos: [] },
+      { titulo: 'Ir a la freseria', fotos: [] },
+      { titulo: 'Escape room', fotos: [] },
+      { titulo: 'Ir a un partido', fotos: [] },
+      { titulo: 'Ir a un concierto', fotos: [] },
+      { titulo: 'Zoológico Temaiken', fotos: [] },
+      { titulo: 'Acuario mundo marino', fotos: [] },
+      { titulo: 'Juego de mesa', fotos: [] },
+      { titulo: 'Practica del pictionary ', fotos: [practicaPictionary] },
+      { titulo: 'Jugar Juego The Walking Dead', fotos: [juegoTheWalkingDead] },
+      { titulo: 'Peli + franoui', fotos: [franouiYpeli] },
+      { titulo: 'Salir a andar bici', fotos: [] },
+      { titulo: 'Pintar cerámica', fotos: [] },
+      { titulo: 'Ir a un museo', fotos: [] },
+      { titulo: 'Galería de arte', fotos: [] },
+      { titulo: 'Ir misa', fotos: [] },
+      { titulo: 'Planetario', fotos: [] },
+      { titulo: 'Foto juntos', fotos: [royjoafot1, royjoafot2, royjoafot3, royjoafot4] },
+      { titulo: 'Hacer sándwich de churrasco y huevo', fotos: [] },
+      { titulo: 'Ir a comer a borde pizza', fotos: [] },
+      { titulo: 'DelBajon y pelis', fotos: [] }
+
     ],
   },
 }
 
+
 CONFIG.historia.citas.forEach((cita) => {
-  cita.hecha = cita.fotos.length > 0
+  cita.fotos = Array.isArray(cita.fotos) ? cita.fotos : []
+  if (typeof cita.hecha !== 'boolean') {
+    cita.hecha = cita.fotos.length > 0
+  }
 })
 
 const cornersHtml = `
@@ -650,6 +689,18 @@ function parseLocalDate(iso) {
   return { year, month, day }
 }
 
+function formatFechaCita(iso) {
+  if (!iso) return ''
+  const { year, month, day } = parseLocalDate(iso)
+  const fecha = new Date(year, month - 1, day)
+  if (Number.isNaN(fecha.getTime())) return ''
+  return fecha.toLocaleDateString('es-AR', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  })
+}
+
 function localDayNumber(date) {
   return Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) / 86400000
 }
@@ -729,6 +780,11 @@ function renderHistoryDates() {
           <p class="mt-0.5 text-xs ${cita.hecha ? 'font-semibold text-jade' : 'text-blush/40'}">${
             cita.hecha ? 'Hecha ❤️' : 'Pendiente'
           }</p>
+          ${
+            cita.fecha
+              ? `<p class="mt-1 text-xs text-blush/45">${formatFechaCita(cita.fecha)}</p>`
+              : ''
+          }
         </div>
       </div>
       ${cita.fotos.length ? renderCarousel(cita, citaIndex) : ''}
@@ -783,7 +839,7 @@ function renderCarousel(cita, citaIndex) {
   return `
   <div class="mt-4" data-carrusel="${citaIndex}" data-total="${cita.fotos.length}">
     <div class="relative">
-      <div class="carrusel-img-wrap relative aspect-video w-full touch-pan-y select-none overflow-hidden rounded-2xl border border-mint/25 bg-ink/30 shadow-md shadow-black/30"></div>
+      <div class="carrusel-img-wrap relative w-full touch-pan-y select-none overflow-hidden rounded-2xl border border-mint/25 bg-ink/30 shadow-md shadow-black/30"></div>
       ${
         varias
           ? `
@@ -876,13 +932,22 @@ function showCarouselPhoto(citaIndex, photoIndex) {
 
   imgWrap.innerHTML = ''
 
+  const setFotoRatio = (img) => {
+    const ratio = img.naturalWidth / img.naturalHeight
+    if (Number.isFinite(ratio) && ratio > 0) {
+      const clamped = Math.min(Math.max(ratio, 3 / 4), 16 / 9)
+      imgWrap.style.setProperty('--foto-ratio', String(clamped))
+    }
+  }
+
   const img = document.createElement('img')
-  img.className = 'carrusel-foto h-full w-full object-cover'
+  img.className = 'carrusel-foto h-full w-full object-contain'
   img.loading = 'lazy'
   img.alt = `${cita.titulo} - foto ${photoIndex + 1}`
   img.draggable = false
   img.style.opacity = '0'
   img.addEventListener('load', () => {
+    setFotoRatio(img)
     img.style.opacity = '1'
   })
   img.addEventListener('error', () => {
