@@ -67,7 +67,6 @@ const CONFIG = {
       { titulo: 'Galería de arte', fotos: [] },
       { titulo: 'Ir misa', fotos: [] },
       { titulo: 'Planetario', fotos: [] },
-      { titulo: 'Foto juntos', fotos: [royjoafot1, royjoafot2, royjoafot3, royjoafot4, royjoafot5, royjoafot6] },
       { titulo: 'Hacer sándwich de churrasco y huevo', fotos: [] },
       { titulo: 'Ir a comer a borde pizza', fotos: [] },
       { titulo: 'DelBajon y pelis', fotos: [delBajon] },
@@ -836,7 +835,7 @@ function renderHistoryDates() {
     <div class="fotos-juntos-section mt-10 border-t border-mint/20 pt-8" data-fotos-juntos>
       <h3 class="glow-rose text-center font-display text-2xl font-light tracking-tight text-rose sm:text-3xl">Nuestras fotos juntos 💖</h3>
       <p class="mx-auto mt-2 max-w-sm text-center text-base text-blush/70">
-        Cada foto se pasa sola cada 10 segundos.
+        bechos en fotos. 💖
       </p>
       <div class="fotos-juntos-player relative mt-5">
         <div class="fotos-juntos-img-wrap relative w-full touch-pan-y select-none overflow-hidden rounded-2xl border border-mint/25 bg-ink/30 shadow-md shadow-black/30"></div>
