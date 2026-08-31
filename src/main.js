@@ -15,6 +15,12 @@ import royjoafot2 from './assets/img/royjoafot2.jpeg'
 import royjoafot3 from './assets/img/royjoafot3.jpeg'
 import royjoafot4 from './assets/img/royjoafot4.jpeg'
 import tejo from './assets/img/tejo.jpeg'
+import bingoJuntos from './assets/img/bingoJuntos.jpeg'
+import delBajon from './assets/img/delBajonyPelis.jpeg'
+import harryPotter from './assets/img/harrypotter.jpeg'
+import harrypotter2 from './assets/img/harrypotter2.jpeg'
+import royjoafot5 from './assets/img/royjoafot5.jpeg'
+import royjoafot6 from './assets/img/royjoafot6.jpeg'
 
 const app = document.querySelector('#app')
 
@@ -30,7 +36,7 @@ const CONFIG = {
       { titulo: 'Ir a comer pastas', fotos: [] },
       { titulo: 'Ir a comer milanesas con papas fritas', fotos: [] },
       { titulo: 'Ir a comer en Dean & Dennys', fotos: [citaDeanDennys, citaDeanDennys2] },
-      { titulo: 'Ir a ver el reestreno de Harry Potter', fotos: [] },
+      { titulo: 'Ir a ver el reestreno de Harry Potter', fotos: [harryPotter, harrypotter2] },
       { titulo: 'Ir a ver The Fockers in Law', fotos: [] },
       { titulo: 'Ir a ver Resident Evil', fotos: [] },
       { titulo: 'Ir a ver Clayface', fotos: [] },
@@ -61,10 +67,11 @@ const CONFIG = {
       { titulo: 'Galería de arte', fotos: [] },
       { titulo: 'Ir misa', fotos: [] },
       { titulo: 'Planetario', fotos: [] },
-      { titulo: 'Foto juntos', fotos: [royjoafot1, royjoafot2, royjoafot3, royjoafot4] },
+      { titulo: 'Foto juntos', fotos: [royjoafot1, royjoafot2, royjoafot3, royjoafot4, royjoafot5, royjoafot6] },
       { titulo: 'Hacer sándwich de churrasco y huevo', fotos: [] },
       { titulo: 'Ir a comer a borde pizza', fotos: [] },
-      { titulo: 'DelBajon y pelis', fotos: [] }
+      { titulo: 'DelBajon y pelis', fotos: [delBajon] },
+      { titulo: 'Bingo juntos', fotos: [bingoJuntos] },
 
     ],
   },
