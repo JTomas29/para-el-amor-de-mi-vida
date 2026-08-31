@@ -834,7 +834,7 @@ function renderHistoryDates() {
       </p>
     </div>
     <div class="fotos-juntos-section mt-10 border-t border-mint/20 pt-8" data-fotos-juntos>
-      <h3 class="glow-rose text-center font-display text-2xl font-light tracking-tight text-rose sm:text-3xl">Nosotros dos 💖</h3>
+      <h3 class="glow-rose text-center font-display text-2xl font-light tracking-tight text-rose sm:text-3xl">Nuestras fotos juntos 💖</h3>
       <p class="mx-auto mt-2 max-w-sm text-center text-base text-blush/70">
         Cada foto se pasa sola cada 10 segundos.
       </p>
