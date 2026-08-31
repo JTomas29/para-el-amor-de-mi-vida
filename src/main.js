@@ -75,6 +75,14 @@ const CONFIG = {
 
     ],
   },
+  fotosJuntos: [
+    royjoafot1,
+    royjoafot2,
+    royjoafot3,
+    royjoafot4,
+    royjoafot5,
+    royjoafot6,
+  ],
 }
 
 
@@ -825,6 +833,29 @@ function renderHistoryDates() {
         Qué loco pensar que ya estábamos en la misma historia sin saberlo. 💚
       </p>
     </div>
+    <div class="fotos-juntos-section mt-10 border-t border-mint/20 pt-8" data-fotos-juntos>
+      <h3 class="glow-rose text-center font-display text-2xl font-light tracking-tight text-rose sm:text-3xl">Nosotros dos 💖</h3>
+      <p class="mx-auto mt-2 max-w-sm text-center text-base text-blush/70">
+        Cada foto se pasa sola cada 10 segundos.
+      </p>
+      <div class="fotos-juntos-player relative mt-5">
+        <div class="fotos-juntos-img-wrap relative w-full touch-pan-y select-none overflow-hidden rounded-2xl border border-mint/25 bg-ink/30 shadow-md shadow-black/30"></div>
+        <button
+          type="button"
+          class="fotos-juntos-btn flex h-10 w-10 items-center justify-center rounded-full bg-ink/60 text-xl text-blush backdrop-blur-sm transition duration-300 ease-in-out hover:bg-mint hover:text-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-mint focus-visible:ring-offset-2 focus-visible:ring-offset-transparent absolute left-2 top-1/2 z-10 -translate-y-1/2"
+          data-fotos-juntos-prev
+          aria-label="Foto anterior"
+        >‹</button>
+        <button
+          type="button"
+          class="fotos-juntos-btn flex h-10 w-10 items-center justify-center rounded-full bg-ink/60 text-xl text-blush backdrop-blur-sm transition duration-300 ease-in-out hover:bg-mint hover:text-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-mint focus-visible:ring-offset-2 focus-visible:ring-offset-transparent absolute right-2 top-1/2 z-10 -translate-y-1/2"
+          data-fotos-juntos-next
+          aria-label="Foto siguiente"
+        >›</button>
+        <div class="fotos-juntos-progress absolute bottom-2 left-1/2 z-10 -translate-x-1/2 rounded-full bg-ink/50 px-3 py-1 text-xs font-semibold tabular-nums text-blush backdrop-blur-sm" data-fotos-juntos-progress></div>
+      </div>
+      <div class="mt-2 flex items-center justify-center gap-1.5" data-fotos-juntos-dots></div>
+    </div>
     <div class="citas-section mt-8">
       <h2 class="glow-rose font-display text-xl font-light tracking-tight text-rose sm:text-2xl">Nuestras citas ❤️</h2>
       ${hechas.length ? seccion('❤️ Las que ya vivimos', hechas) : ''}
@@ -836,6 +867,7 @@ function renderHistoryDates() {
   CONFIG.historia.citas.forEach((cita, citaIndex) => {
     if (cita.fotos.length > 0) initCarousel(citaIndex)
   })
+  initFotosJuntos()
 }
 
 const carouselStates = {}
@@ -989,4 +1021,116 @@ function nextPhoto(citaIndex) {
 
 function previousPhoto(citaIndex) {
   goToPhoto(citaIndex, carouselStates[citaIndex] - 1)
+}
+
+const fotosJuntos = CONFIG.fotosJuntos
+const FOTOS_JUNTOS_INTERVALO_MS = 10000
+let fotosJuntosIndice = 0
+let fotosJuntosTimer = null
+
+function initFotosJuntos() {
+  const root = document.querySelector('[data-fotos-juntos]')
+  if (!root) return
+
+  const dots = root.querySelector('[data-fotos-juntos-dots]')
+  dots.innerHTML = fotosJuntos
+    .map(
+      (foto, index) => `
+      <button
+        type="button"
+        class="fotos-juntos-dot h-2.5 w-2.5 rounded-full transition-colors duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-mint"
+        data-fotos-juntos-foto="${index}"
+        aria-label="Foto ${index + 1}"
+      ></button>
+    `,
+    )
+    .join('')
+
+  const imgWrap = root.querySelector('.fotos-juntos-img-wrap')
+  let startX = null
+  let startY = null
+  imgWrap.addEventListener('pointerdown', (event) => {
+    startX = event.clientX
+    startY = event.clientY
+  })
+  imgWrap.addEventListener('pointerup', (event) => {
+    if (startX === null) return
+    const dx = event.clientX - startX
+    const dy = event.clientY - startY
+    startX = null
+    startY = null
+    if (Math.abs(dx) > 48 && Math.abs(dx) > Math.abs(dy)) {
+      if (dx < 0) showFotosJuntos(fotosJuntosIndice + 1)
+      else showFotosJuntos(fotosJuntosIndice - 1)
+    }
+  })
+
+  root
+    .querySelector('[data-fotos-juntos-prev]')
+    .addEventListener('click', () => showFotosJuntos(fotosJuntosIndice - 1))
+  root
+    .querySelector('[data-fotos-juntos-next]')
+    .addEventListener('click', () => showFotosJuntos(fotosJuntosIndice + 1))
+  dots.querySelectorAll('.fotos-juntos-dot').forEach((dot) => {
+    dot.addEventListener('click', () =>
+      showFotosJuntos(Number(dot.dataset.fotosJuntosFoto)),
+    )
+  })
+
+  showFotosJuntos(0)
+}
+
+function showFotosJuntos(photoIndex) {
+  const root = document.querySelector('[data-fotos-juntos]')
+  if (!root) return
+
+  const total = fotosJuntos.length
+  fotosJuntosIndice = ((photoIndex % total) + total) % total
+
+  const imgWrap = root.querySelector('.fotos-juntos-img-wrap')
+  imgWrap.innerHTML = ''
+
+  const img = document.createElement('img')
+  img.className = 'carrusel-foto h-full w-full object-contain'
+  img.loading = 'lazy'
+  img.alt = `Nosotros dos - foto ${fotosJuntosIndice + 1}`
+  img.draggable = false
+  img.style.opacity = '0'
+  img.addEventListener('load', () => {
+    const ratio = img.naturalWidth / img.naturalHeight
+    if (Number.isFinite(ratio) && ratio > 0) {
+      imgWrap.style.setProperty('--foto-ratio', String(Math.min(Math.max(ratio, 3 / 4), 16 / 9)))
+    }
+    img.style.opacity = '1'
+  })
+  img.addEventListener('error', () => {
+    imgWrap.innerHTML = `
+      <div class="flex h-full w-full flex-col items-center justify-center gap-2 px-4 text-center">
+        <span class="text-3xl" aria-hidden="true">❤️</span>
+        <span class="text-xs text-blush/60">Esta foto todavía no está disponible</span>
+      </div>
+    `
+  })
+  imgWrap.appendChild(img)
+  img.src = fotosJuntos[fotosJuntosIndice]
+
+  root.querySelectorAll('.fotos-juntos-dot').forEach((dot, index) => {
+    const activo = index === fotosJuntosIndice
+    dot.classList.toggle('bg-jade', activo)
+    dot.classList.toggle('bg-white/20', !activo)
+  })
+
+  restartFotosJuntosTimer(root)
+}
+
+function restartFotosJuntosTimer(root) {
+  if (fotosJuntosTimer !== null) clearInterval(fotosJuntosTimer)
+  const progress = root.querySelector('[data-fotos-juntos-progress]')
+  progress.textContent = '10s'
+  let restante = FOTOS_JUNTOS_INTERVALO_MS / 1000
+  fotosJuntosTimer = setInterval(() => {
+    restante -= 1
+    progress.textContent = `${restante}s`
+    if (restante <= 0) showFotosJuntos(fotosJuntosIndice + 1)
+  }, 1000)
 }
