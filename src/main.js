@@ -21,6 +21,8 @@ import harryPotter from './assets/img/harrypotter.jpeg'
 import harrypotter2 from './assets/img/harrypotter2.jpeg'
 import royjoafot5 from './assets/img/royjoafot5.jpeg'
 import royjoafot6 from './assets/img/royjoafot6.jpeg'
+import royjoafot7 from './assets/img/royjoafot7.jpeg'
+import royjoafot8 from './assets/img/royjoafot8.jpeg'
 
 const app = document.querySelector('#app')
 
@@ -75,12 +77,14 @@ const CONFIG = {
     ],
   },
   fotosJuntos: [
+    royjoafot7,
     royjoafot1,
     royjoafot2,
     royjoafot3,
     royjoafot4,
     royjoafot5,
     royjoafot6,
+    royjoafot8,
   ],
 }
 
